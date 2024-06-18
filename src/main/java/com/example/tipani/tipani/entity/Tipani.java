@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class Tipani {
     private TipaniStatus status;
 
     @OneToMany(mappedBy = "tipani")
-    private List<TipaniAttachment> tipaniAttachments;
+    private List<TipaniAttachment> tipaniAttachments = new ArrayList<>();
     @OneToMany(mappedBy = "tipani")
     private List<TipaniRecomendators> tipaniRecomendators;
 

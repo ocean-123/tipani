@@ -1,10 +1,12 @@
 package com.example.tipani.tipani.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,10 +24,12 @@ public class Designation {
     private String title;
     private String code;
 
-
+    private boolean status;
+//active , inactive
 
     @OneToMany(mappedBy = "desgination")
-    private List<Employee> employees;
+//    @JsonManagedReference
+    private List<Employee> employees =new ArrayList<>();
 
     @Column(name = "CREATED_NAME", updatable = false)
     private String createdName;

@@ -1,11 +1,14 @@
 package com.example.tipani.tipani.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,7 +26,12 @@ public class Employee {
 
     @ManyToOne
     @JoinColumn(name= "DEGINATION_ID",referencedColumnName = "id")
-      private Designation desgination;
+//    @JsonBackReference
+    private Designation desgination;
+
+    @OneToMany(mappedBy = "employee")
+//    @JsonManagedReference
+    private List<Tipani> tipanis =new ArrayList<>();
 
     private boolean status;
     //active ,inactive
