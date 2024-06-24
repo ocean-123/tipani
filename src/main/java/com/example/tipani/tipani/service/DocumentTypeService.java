@@ -2,6 +2,8 @@ package com.example.tipani.tipani.service;
 
 import com.example.tipani.tipani.entity.Department;
 import com.example.tipani.tipani.entity.DocumentTypes;
+import com.example.tipani.tipani.entity.dto.DocumentTypesDTO;
+import com.example.tipani.tipani.service.impl.ResourceNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,5 +18,7 @@ public interface DocumentTypeService {
 
     void deleteEntity(Long id);
 
-    Optional<DocumentTypes> getEntityById(Long id);
+    Optional<DocumentTypesDTO> getEntityById(Long id);
+
+    DocumentTypesDTO update(Long id, DocumentTypesDTO documentTypesDTO) throws ResourceNotFoundException;
 }

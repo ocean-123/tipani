@@ -31,6 +31,8 @@ public class Tipani {
    @Enumerated
     private TipaniStatus status;
 
+
+
     @OneToMany(mappedBy = "tipani")
     private List<TipaniAttachment> tipaniAttachments = new ArrayList<>();
     @OneToMany(mappedBy = "tipani")

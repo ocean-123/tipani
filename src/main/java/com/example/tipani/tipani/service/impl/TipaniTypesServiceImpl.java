@@ -31,10 +31,26 @@ public class TipaniTypesServiceImpl  implements TipaniTypesService {
                 .map(TipaniTypesDTO::new)
                 .collect(Collectors.toList());
     }
-    public Optional<TipaniTypes> getEntityById(Long id) {
-        return repository.findById(id);
+    public Optional<TipaniTypesDTO> getEntityById(Long id) {
+        return repository.findById(id)
+                .map(TipaniTypesDTO::new);
     }
 
+    @Override
+    public TipaniTypesDTO updateType(Long id, TipaniTypesDTO tipaniTypesDTO) throws ResourceNotFoundException {
+        TipaniTypes types = repository.findById(id).orElseThrow(()-> new ResourceNotFoundException("No type found for"+id));
+
+        types.setId(types.getId());
+        types.setTitle(tipaniTypesDTO.getTitle());
+        types.setCode(tipaniTypesDTO.getCode());
+        types.setCreatedName(tipaniTypesDTO.getCreatedName());
+        types.setCreatedDate(tipaniTypesDTO.getCreatedDate());
+        types.setUpdateName(tipaniTypesDTO.getUpdateName());
+        types.setUpdateDate(tipaniTypesDTO.getUpdateDate());
+
+        TipaniTypes tipaniTypes = repository.save(types);
+        return new TipaniTypesDTO(tipaniTypes);
+    }
 
 
     public void deleteEntity(Long id) {

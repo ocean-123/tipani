@@ -6,6 +6,7 @@ import com.example.tipani.tipani.entity.Employee;
 import com.example.tipani.tipani.entity.dto.EmployeeDTO;
 import com.example.tipani.tipani.service.DepartmentService;
 import com.example.tipani.tipani.service.EmployeeService;
+import com.example.tipani.tipani.service.impl.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +41,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Employee> getEntityById(@PathVariable Long id) {
+    public ResponseEntity<EmployeeDTO> getEntityById(@PathVariable Long id) {
         return service.getEntityById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -70,5 +71,10 @@ public class EmployeeController {
     public ResponseEntity<Void> deleteEntity(@PathVariable Long id) {
         service.deleteEntity(id);
         return ResponseEntity.noContent().build();
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<EmployeeDTO> updateEmployee(@PathVariable Long id, @RequestBody EmployeeDTO employeeDTO) throws ResourceNotFoundException {
+        EmployeeDTO updatedEmployee = service.updateEmployee(id, employeeDTO);
+        return ResponseEntity.ok(updatedEmployee);
     }
 }

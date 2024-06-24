@@ -19,8 +19,8 @@ public class TipaniRecomendatorsDTO {
 
     public  TipaniRecomendatorsDTO(TipaniRecomendators recomendators){
         this.id = recomendators.getId();
-        this.tipaniId = recomendators.getTipani().getId();
-        this.employeeId = recomendators.getEmployee().getId();
+        this.tipaniId =(recomendators.getTipani()!=null)? recomendators.getTipani().getId():null;
+        this.employeeId = (recomendators.getEmployee()!=null)? recomendators.getEmployee().getId():null;
         this.position = recomendators.getPosition();
         this.hasRecommends = recomendators.isHasRecommends();
     }

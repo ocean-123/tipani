@@ -5,9 +5,12 @@ import com.example.tipani.tipani.entity.Department;
 import com.example.tipani.tipani.entity.Designation;
 import com.example.tipani.tipani.entity.Tipani;
 import com.example.tipani.tipani.entity.dto.DesignationDTO;
+import com.example.tipani.tipani.entity.dto.DocumentTypesDTO;
+import com.example.tipani.tipani.entity.dto.EmployeeDTO;
 import com.example.tipani.tipani.entity.dto.TipaniDTO;
 import com.example.tipani.tipani.service.DepartmentService;
 import com.example.tipani.tipani.service.TipaniService;
+import com.example.tipani.tipani.service.impl.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +40,7 @@ public class TipaniController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Tipani> getEntityById(@PathVariable Long id) {
+    public ResponseEntity<TipaniDTO> getEntityById(@PathVariable Long id) {
         return service.getEntityById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -62,5 +65,10 @@ public class TipaniController {
     public ResponseEntity<Void> deleteEntity(@PathVariable Long id) {
         service.deleteEntity(id);
         return ResponseEntity.noContent().build();
+    }
+        @PutMapping("/{id}")
+    public ResponseEntity<TipaniDTO> updateEmployee(@PathVariable Long id, @RequestBody TipaniDTO tipaniDTO ) throws ResourceNotFoundException {
+            TipaniDTO updateTipani = service.updateTipani(id, tipaniDTO);
+        return ResponseEntity.ok(updateTipani);
     }
 }

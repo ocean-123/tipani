@@ -2,8 +2,12 @@ package com.example.tipani.tipani.controller;
 
 import com.example.tipani.tipani.entity.Department;
 import com.example.tipani.tipani.entity.DocumentTypes;
+import com.example.tipani.tipani.entity.dto.DesignationDTO;
+import com.example.tipani.tipani.entity.dto.DocumentTypesDTO;
+import com.example.tipani.tipani.entity.dto.EmployeeDTO;
 import com.example.tipani.tipani.service.DepartmentService;
 import com.example.tipani.tipani.service.DocumentTypeService;
+import com.example.tipani.tipani.service.impl.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +28,7 @@ public class DocumentTypeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DocumentTypes> getEntityById(@PathVariable Long id) {
+    public ResponseEntity<DocumentTypesDTO> getEntityById(@PathVariable Long id) {
         return service.getEntityById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -49,5 +53,13 @@ public class DocumentTypeController {
     public ResponseEntity<Void> deleteEntity(@PathVariable Long id) {
         service.deleteEntity(id);
         return ResponseEntity.noContent().build();
+    }
+
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<DocumentTypesDTO> updateD(@PathVariable Long id, @RequestBody DocumentTypesDTO documentTypesDTO) throws ResourceNotFoundException {
+        DocumentTypesDTO dto = service.update(id, documentTypesDTO);
+        return ResponseEntity.ok(dto);
     }
 }

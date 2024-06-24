@@ -29,7 +29,7 @@ public class EmployeeDTO {
         this.address = employee.getAddress();
         this.tel = employee.getTel();
         this.code = employee.getCode();
-        this.designationId = employee.getDesgination().getId();
+        this.designationId =  (employee.getDesgination() != null) ? employee.getDesgination().getId() : null;
         this.status = employee.isStatus();
         this.createdName = employee.getCreatedName();
         this.createdDate = employee.getCreatedDate();

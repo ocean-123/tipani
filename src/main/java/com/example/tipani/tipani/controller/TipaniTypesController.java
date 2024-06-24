@@ -2,10 +2,12 @@ package com.example.tipani.tipani.controller;
 
 import com.example.tipani.tipani.entity.Employee;
 import com.example.tipani.tipani.entity.TipaniTypes;
+import com.example.tipani.tipani.entity.dto.DocumentTypesDTO;
 import com.example.tipani.tipani.entity.dto.EmployeeDTO;
 import com.example.tipani.tipani.entity.dto.TipaniTypesDTO;
 import com.example.tipani.tipani.service.EmployeeService;
 import com.example.tipani.tipani.service.TipaniTypesService;
+import com.example.tipani.tipani.service.impl.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +36,7 @@ public class TipaniTypesController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TipaniTypes> getEntityById(@PathVariable Long id) {
+    public ResponseEntity<TipaniTypesDTO> getEntityById(@PathVariable Long id) {
         return service.getEntityById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -56,6 +58,17 @@ public class TipaniTypesController {
         service.deleteEntity(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<TipaniTypesDTO> updateTipaniTypes(
+            @PathVariable Long id,
+            @RequestBody TipaniTypesDTO tipaniTypesDTO
+    ) throws ResourceNotFoundException {
+        TipaniTypesDTO tipaniTypesDTO1 = service.updateType(id, tipaniTypesDTO);
+        return ResponseEntity.ok(tipaniTypesDTO1);
+
+    }
+
 
 
 }

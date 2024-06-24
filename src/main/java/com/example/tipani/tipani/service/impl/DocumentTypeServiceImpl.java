@@ -2,6 +2,9 @@ package com.example.tipani.tipani.service.impl;
 
 import com.example.tipani.tipani.entity.Department;
 import com.example.tipani.tipani.entity.DocumentTypes;
+import com.example.tipani.tipani.entity.dto.DepartmentDTO;
+import com.example.tipani.tipani.entity.dto.DocumentTypesDTO;
+import com.example.tipani.tipani.entity.dto.EmployeeDTO;
 import com.example.tipani.tipani.repo.DepartmentRepo;
 import com.example.tipani.tipani.repo.DocumentTypesRepo;
 import com.example.tipani.tipani.service.DocumentTypeService;
@@ -19,8 +22,25 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
         return repository.findAll();
     }
 
-    public Optional<DocumentTypes> getEntityById(Long id) {
-        return repository.findById(id);
+    public Optional<DocumentTypesDTO> getEntityById(Long id) {
+        return repository.findById(id)
+                .map(DocumentTypesDTO::new);
+    }
+
+    @Override
+    public DocumentTypesDTO update(Long id, DocumentTypesDTO documentTypesDTO) throws ResourceNotFoundException {
+        DocumentTypes types = repository.findById(id).orElseThrow(()-> new ResourceNotFoundException("No type found for"+id));
+
+        types.setId(types.getId());
+        types.setTitle(documentTypesDTO.getTitle());
+        types.setCode(documentTypesDTO.getCode());
+        types.setCreatedName(documentTypesDTO.getCreatedName());
+        types.setCreatedDate(documentTypesDTO.getCreatedDate());
+        types.setUpdateName(documentTypesDTO.getUpdateName());
+        types.setUpdateDate(documentTypesDTO.getUpdateDate());
+
+        DocumentTypes documentTypes = repository.save(types);
+        return new DocumentTypesDTO(documentTypes);
     }
 
     public DocumentTypes saveEntity(DocumentTypes entity) {

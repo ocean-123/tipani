@@ -1,13 +1,14 @@
 package com.example.tipani.tipani.service.impl;
 
-import com.example.tipani.tipani.entity.Department;
-import com.example.tipani.tipani.entity.TipaniAttachment;
-import com.example.tipani.tipani.entity.TipaniRecomendators;
+import com.example.tipani.tipani.entity.*;
+import com.example.tipani.tipani.entity.dto.EmployeeDTO;
 import com.example.tipani.tipani.entity.dto.TipaniAttachmentDTO;
 import com.example.tipani.tipani.entity.dto.TipaniDTO;
 import com.example.tipani.tipani.entity.dto.TipaniRecomendatorsDTO;
 import com.example.tipani.tipani.repo.DepartmentRepo;
+import com.example.tipani.tipani.repo.DocumentTypesRepo;
 import com.example.tipani.tipani.repo.TipaniAttachmentRepo;
+import com.example.tipani.tipani.repo.TipaniRepo;
 import com.example.tipani.tipani.service.TipaniAttachService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,12 @@ import java.util.stream.Collectors;
 public class TipaniAttachServiceImpl implements TipaniAttachService {
     @Autowired
     private TipaniAttachmentRepo repository;
+
+    @Autowired
+    private TipaniRepo tipaniRepo;
+
+    @Autowired
+    private DocumentTypesRepo typesRepo;
     public TipaniAttachmentDTO saveEntity(TipaniAttachment entity) {
         TipaniAttachment savedEmployee = repository.save(entity);
         return new TipaniAttachmentDTO(savedEmployee);
@@ -31,10 +38,45 @@ public class TipaniAttachServiceImpl implements TipaniAttachService {
                 .collect(Collectors.toList());
     }
 
-    public Optional<TipaniAttachment> getEntityById(Long id) {
-        return repository.findById(id);
+    public Optional<TipaniAttachmentDTO> getEntityById(Long id) {
+        return repository.findById(id)
+                .map(TipaniAttachmentDTO::new);
     }
 
+    @Override
+    public TipaniAttachmentDTO updateTipaniAttach(Long id, TipaniAttachmentDTO attachmentDTO) throws ResourceNotFoundException {
+
+        TipaniAttachment attachment = repository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("Could not find attachment"+id));
+
+        attachment.setId(attachmentDTO.getId());
+
+
+        if (attachmentDTO.getTipaniId() != null) {
+            Tipani tipani = tipaniRepo.findById(attachmentDTO.getTipaniId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Tipani not found with id " + attachmentDTO.getTipaniId()));
+            attachment.setTipani(tipani);
+        }
+        if (attachmentDTO.getDocumentTypesId() != null) {
+            DocumentTypes types = typesRepo.findById(attachmentDTO.getDocumentTypesId())
+                    .orElseThrow(() -> new ResourceNotFoundException("employee not found with id " + attachmentDTO.getDocumentTypesId()));
+            attachment.setDocumentTypes(types);
+        }
+        attachment.setAttachmentLocation(attachmentDTO.getAttachmentLocation());
+        attachment.setFileLocation(attachmentDTO.getFileLocation());
+        attachment.setFileName(attachmentDTO.getFileName());
+
+        attachment.setCreatedName(attachmentDTO.getCreatedName());
+        attachment.setCreatedDate(attachmentDTO.getCreatedDate());
+        attachment.setUpdateName(attachmentDTO.getUpdateName());
+        attachment.setUpdateDate(attachmentDTO.getUpdateDate());
+
+        TipaniAttachment attachment1 = repository.save(attachment);
+
+        return new TipaniAttachmentDTO(attachment1);
+
+
+    }
 
 
     public void deleteEntity(Long id) {

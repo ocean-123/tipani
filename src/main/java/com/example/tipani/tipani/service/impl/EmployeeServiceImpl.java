@@ -1,11 +1,14 @@
 package com.example.tipani.tipani.service.impl;
 
 import com.example.tipani.tipani.entity.Department;
+import com.example.tipani.tipani.entity.Designation;
 import com.example.tipani.tipani.entity.Employee;
 import com.example.tipani.tipani.entity.dto.EmployeeDTO;
 import com.example.tipani.tipani.repo.DepartmentRepo;
+import com.example.tipani.tipani.repo.DesginationRepo;
 import com.example.tipani.tipani.repo.EmployeeRepo;
 import com.example.tipani.tipani.service.EmployeeService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +23,8 @@ public class EmployeeServiceImpl  implements EmployeeService {
 //    public List<Employee> getAllEntities() {
 //        return repository.findAll();
 //    }
+@Autowired
+private DesginationRepo designationRepository;
 public EmployeeDTO saveEntity(Employee entity) {
     Employee savedEmployee = repository.save(entity);
     return new EmployeeDTO(savedEmployee);
@@ -30,9 +35,12 @@ public EmployeeDTO saveEntity(Employee entity) {
                 .map(EmployeeDTO::new)
                 .collect(Collectors.toList());
     }
-    public Optional<Employee> getEntityById(Long id) {
-        return repository.findById(id);
+    public Optional<EmployeeDTO> getEntityById(Long id) {
+        return repository.findById(id)
+                .map(EmployeeDTO::new);
     }
+
+
 
 //    public Employee saveEntity(Employee entity) {
 //        return repository.save(entity);
@@ -51,5 +59,33 @@ public EmployeeDTO saveEntity(Employee entity) {
         } else {
             throw new RuntimeException("Entity not found");
         }
+    }
+    @Transactional
+    public EmployeeDTO updateEmployee(Long id, EmployeeDTO employeeDTO) throws ResourceNotFoundException {
+        Employee employee = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found with id " + id));
+
+        // Update relevant fields
+        employee.setName(employeeDTO.getName());
+        employee.setAddress(employeeDTO.getAddress());
+        employee.setTel(employeeDTO.getTel());
+        employee.setCode(employeeDTO.getCode());
+        employee.setCreatedName(employeeDTO.getCreatedName());
+        employee.setCreatedDate(employeeDTO.getCreatedDate());
+        employee.setUpdateName(employeeDTO.getUpdateName());
+        employee.setUpdateDate(employeeDTO.getUpdateDate());
+
+        // Update designation if it exists
+        if (employeeDTO.getDesignationId() != null) {
+            Designation designation = designationRepository.findById(employeeDTO.getDesignationId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Designation not found with id " + employeeDTO.getDesignationId()));
+            employee.setDesgination(designation);
+        }
+
+        // Save the updated employee
+        Employee updatedEmployee = repository.save(employee);
+
+        // Convert updated employee to DTO
+        return new EmployeeDTO(updatedEmployee);
     }
 }

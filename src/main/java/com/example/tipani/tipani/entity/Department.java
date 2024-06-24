@@ -24,6 +24,9 @@ private String code;
 private boolean status;
 //active , inactive
 
+
+    //emp and tipani
+
     @Column(name = "CREATED_NAME", updatable = false)
     private String createdName;
 

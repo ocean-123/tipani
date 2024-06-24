@@ -1,6 +1,10 @@
 package com.example.tipani.tipani.service.impl;
 
 import com.example.tipani.tipani.entity.Department;
+import com.example.tipani.tipani.entity.TipaniTypes;
+import com.example.tipani.tipani.entity.dto.DepartmentDTO;
+import com.example.tipani.tipani.entity.dto.EmployeeDTO;
+import com.example.tipani.tipani.entity.dto.TipaniTypesDTO;
 import com.example.tipani.tipani.repo.DepartmentRepo;
 import com.example.tipani.tipani.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +22,25 @@ public class DepartmentServiceImpl  implements DepartmentService {
         return repository.findAll();
     }
 
-    public Optional<Department> getEntityById(Long id) {
-        return repository.findById(id);
+    public Optional<DepartmentDTO> getEntityById(Long id) {
+        return repository.findById(id)
+                .map(DepartmentDTO::new);
+    }
+
+    @Override
+    public DepartmentDTO update(Long id, DepartmentDTO departmentDTO) throws ResourceNotFoundException {
+        Department types = repository.findById(id).orElseThrow(()-> new ResourceNotFoundException("No type found for"+id));
+
+        types.setId(types.getId());
+        types.setTitle(departmentDTO.getTitle());
+        types.setCode(departmentDTO.getCode());
+        types.setCreatedName(departmentDTO.getCreatedName());
+        types.setCreatedDate(departmentDTO.getCreatedDate());
+        types.setUpdateName(departmentDTO.getUpdateName());
+        types.setUpdateDate(departmentDTO.getUpdateDate());
+
+        Department department = repository.save(types);
+        return new DepartmentDTO(department);
     }
 
     public Department saveEntity(Department entity) {
@@ -40,4 +61,5 @@ public class DepartmentServiceImpl  implements DepartmentService {
             throw new RuntimeException("Entity not found");
         }
     }
+
 }

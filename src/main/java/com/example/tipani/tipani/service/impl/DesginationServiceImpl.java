@@ -2,10 +2,13 @@ package com.example.tipani.tipani.service.impl;
 
 import com.example.tipani.tipani.entity.Department;
 import com.example.tipani.tipani.entity.Designation;
+import com.example.tipani.tipani.entity.Employee;
 import com.example.tipani.tipani.entity.dto.DesignationDTO;
+import com.example.tipani.tipani.entity.dto.EmployeeDTO;
 import com.example.tipani.tipani.repo.DepartmentRepo;
 import com.example.tipani.tipani.repo.DesginationRepo;
 import com.example.tipani.tipani.service.DesginationService;
+import com.example.tipani.tipani.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +23,45 @@ public class DesginationServiceImpl implements DesginationService {
 //    public List<Designation> getAllEntities() {
 //        return repository.findAll();
 //    }
+@Autowired
+private EmployeeService employeeService;
 public DesignationDTO saveEntity(Designation entity) {
     Designation savedDesignation = repository.save(entity);
     return new DesignationDTO(savedDesignation);
 }
+
+@Override
+    public DesignationDTO updateDesignation(Long id, DesignationDTO designationDTO) throws ResourceNotFoundException {
+        Designation designation = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Designation not found with id " + id));
+
+        designation.setTitle(designationDTO.getTitle());
+        designation.setCode(designationDTO.getCode());
+
+        designation.setCreatedName(designationDTO.getCreatedName());
+        designation.setCreatedDate(designationDTO.getCreatedDate());
+        designation.setUpdateName(designationDTO.getUpdateName());
+        designation.setUpdateDate(designationDTO.getUpdateDate());
+
+        // Map employees
+//        List<Employee> employees = designationDTO.getEmployees().stream()
+//                .map(employeeDTO -> {
+//                    try {
+//                        return employeeService.getEntityById(employeeDTO.getId())
+//                                .orElseThrow(() -> new ResourceNotFoundException("Employee not found with id " + employeeDTO.getId()));
+//                    } catch (ResourceNotFoundException e) {
+//                        throw new RuntimeException(e);
+//                    }
+//                })
+//                .collect(Collectors.toList());
+//        designation.setEmployees(employees);
+
+        // Save the updated designation
+        Designation updatedDesignation = repository.save(designation);
+
+        // Convert updated designation to DTO
+        return new DesignationDTO(updatedDesignation);
+    }
 
     public List<DesignationDTO> getAllEntities() {
         return repository.findAll().stream()
@@ -31,8 +69,9 @@ public DesignationDTO saveEntity(Designation entity) {
                 .collect(Collectors.toList());
     }
 
-    public Optional<Designation> getEntityById(Long id) {
-        return repository.findById(id);
+    public Optional<DesignationDTO> getEntityById(Long id) {
+        return repository.findById(id)
+                .map(DesignationDTO::new);
     }
 
 //    public Designation saveEntity(Designation entity) {

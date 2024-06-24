@@ -3,6 +3,7 @@ package com.example.tipani.tipani.service;
 import com.example.tipani.tipani.entity.Department;
 import com.example.tipani.tipani.entity.Employee;
 import com.example.tipani.tipani.entity.dto.EmployeeDTO;
+import com.example.tipani.tipani.service.impl.ResourceNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,5 +18,8 @@ public interface EmployeeService {
 
     void deleteEntity(Long id);
 
-    Optional<Employee> getEntityById(Long id);
+    Optional<EmployeeDTO> getEntityById(Long id);
+
+
+    EmployeeDTO updateEmployee(Long id, EmployeeDTO employeeDTO) throws ResourceNotFoundException;
 }
