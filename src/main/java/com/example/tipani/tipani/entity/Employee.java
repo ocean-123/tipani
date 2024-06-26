@@ -33,6 +33,10 @@ public class Employee {
 //    @JsonManagedReference
     private List<Tipani> tipanis =new ArrayList<>();
 
+
+    @OneToMany(mappedBy = "employee")
+//    @JsonManagedReference
+    private List<TipaniApprover> approvers =new ArrayList<>();
     private boolean status;
     //active ,inactive
 

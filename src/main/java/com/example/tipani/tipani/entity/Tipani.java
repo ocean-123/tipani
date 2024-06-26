@@ -36,10 +36,12 @@ public class Tipani {
     @OneToMany(mappedBy = "tipani")
     private List<TipaniAttachment> tipaniAttachments = new ArrayList<>();
     @OneToMany(mappedBy = "tipani")
-    private List<TipaniRecomendators> tipaniRecomendators;
+    private List<TipaniRecomendators> tipaniRecomendators = new ArrayList<>() ;
 
     @OneToMany(mappedBy = "tipani")
-    private List<TipaniComment> tipaniComments;
+    private List<TipaniComment> tipaniComments = new ArrayList<>();
+    @OneToMany(mappedBy = "tipani")
+    private List<TipaniApprover> tipaniApprovers = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name= "TIPANI_Types_ID",referencedColumnName = "id")
