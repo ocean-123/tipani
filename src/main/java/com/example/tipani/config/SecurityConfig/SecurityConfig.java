@@ -1,4 +1,4 @@
-package com.example.tipani.config;
+package com.example.tipani.config.SecurityConfig;
 
 public class SecurityConfig {
 }

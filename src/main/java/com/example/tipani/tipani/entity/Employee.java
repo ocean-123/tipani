@@ -24,6 +24,7 @@ public class Employee {
     private String tel;
     private String  code ;
 
+
     @ManyToOne
     @JoinColumn(name= "DEGINATION_ID",referencedColumnName = "id")
 //    @JsonBackReference

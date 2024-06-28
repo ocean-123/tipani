@@ -4,16 +4,16 @@ package com.example.tipani.tipani.controller;
 import com.example.tipani.tipani.entity.Department;
 import com.example.tipani.tipani.entity.Designation;
 import com.example.tipani.tipani.entity.Tipani;
-import com.example.tipani.tipani.entity.dto.DesignationDTO;
-import com.example.tipani.tipani.entity.dto.DocumentTypesDTO;
-import com.example.tipani.tipani.entity.dto.EmployeeDTO;
-import com.example.tipani.tipani.entity.dto.TipaniDTO;
+import com.example.tipani.tipani.entity.TipaniStatus;
+import com.example.tipani.tipani.entity.dto.*;
 import com.example.tipani.tipani.service.DepartmentService;
 import com.example.tipani.tipani.service.TipaniService;
 import com.example.tipani.tipani.service.impl.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -70,5 +70,34 @@ public class TipaniController {
     public ResponseEntity<TipaniDTO> updateEmployee(@PathVariable Long id, @RequestBody TipaniDTO tipaniDTO ) throws ResourceNotFoundException {
             TipaniDTO updateTipani = service.updateTipani(id, tipaniDTO);
         return ResponseEntity.ok(updateTipani);
+    }
+
+    @GetMapping("/{tipaniId}/comments")
+    public ResponseEntity<List<TipaniCommentDTO>> getComments(@PathVariable Long tipaniId) {
+        List<TipaniCommentDTO> comments = service.getCommentsByTipaniId(tipaniId);
+        return ResponseEntity.ok(comments);
+    }
+
+    @GetMapping("/{tipaniId}/recomendations")
+    public ResponseEntity getRecomendations(@PathVariable Long tipaniId) {
+        List<TipaniRecomendatorsDTO> recomendations = service.getRecomendatorsByTipaniId(tipaniId);
+        return ResponseEntity.ok(recomendations);
+    }
+    @GetMapping("/{tipaniId}/attachment")
+    public ResponseEntity getAttachment(@PathVariable Long tipaniId) {
+        List<TipaniAttachmentDTO> attachment = service.getAttachmentByTipaniId(tipaniId);
+        return ResponseEntity.ok(attachment);
+    }
+    @GetMapping("/{tipaniId}/approver")
+    public ResponseEntity getApprover(@PathVariable Long tipaniId) {
+        List<TipaniApproverDTO> approver = service.getapproverByTipaniId(tipaniId);
+        return ResponseEntity.ok(approver);
+    }
+    @GetMapping("/status")
+    public ResponseEntity getTipanisByStatus(@RequestParam TipaniStatus status) {
+
+            List<TipaniDTO> tipanis = service.getTipanisByStatus(status);
+            return ResponseEntity.ok(tipanis);
+
     }
 }

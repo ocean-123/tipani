@@ -1,13 +1,8 @@
 package com.example.tipani.tipani.service.impl;
 
 import com.example.tipani.tipani.entity.*;
-import com.example.tipani.tipani.entity.dto.EmployeeDTO;
-import com.example.tipani.tipani.entity.dto.TipaniAttachmentDTO;
-import com.example.tipani.tipani.entity.dto.TipaniDTO;
-import com.example.tipani.tipani.repo.DepartmentRepo;
-import com.example.tipani.tipani.repo.EmployeeRepo;
-import com.example.tipani.tipani.repo.TipaniRepo;
-import com.example.tipani.tipani.repo.TipaniTypesRepo;
+import com.example.tipani.tipani.entity.dto.*;
+import com.example.tipani.tipani.repo.*;
 import com.example.tipani.tipani.service.TipaniService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +20,18 @@ public class TipaniServiceImpl implements TipaniService {
     private EmployeeRepo employeeRepo;
     @Autowired
     private TipaniTypesRepo tipaniTypesRepo;
+    @Autowired
+    private TipaniCommnetRepo commnetRepo;
+
+    @Autowired
+    private TipaniApproverRepo approverRepo;
+
+    @Autowired
+    private TipaniRecomendatorsRepo recomendatorsRepo;
+
+
+    @Autowired
+    private TipaniAttachmentRepo attachmentRepo;
 
 
     public TipaniDTO saveEntity(Tipani entity) {
@@ -81,6 +88,37 @@ public class TipaniServiceImpl implements TipaniService {
 
         }
 
+
+    @Override
+    public List<TipaniCommentDTO> getCommentsByTipaniId(Long tipaniId) {
+        List<TipaniComment> comments = commnetRepo.findByTipaniId(tipaniId);
+        return comments.stream().map(TipaniCommentDTO::new).collect(Collectors.toList());
+    }
+
+
+    @Override
+    public List<TipaniRecomendatorsDTO> getRecomendatorsByTipaniId(Long tipaniId) {
+        List<TipaniRecomendators> recomendators = recomendatorsRepo.findByTipaniId(tipaniId);
+        return recomendators.stream().map(TipaniRecomendatorsDTO::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TipaniApproverDTO> getapproverByTipaniId(Long tipaniId) {
+        List<TipaniApprover> approvers = approverRepo.findByTipaniId(tipaniId);
+        return approvers.stream().map(TipaniApproverDTO::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TipaniDTO> getTipanisByStatus(TipaniStatus status) {
+        List<Tipani> tipanis = repository.findByStatus(status);
+        return tipanis.stream().map(TipaniDTO::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TipaniAttachmentDTO> getAttachmentByTipaniId(Long tipaniId) {
+        List<TipaniAttachment> attachments = attachmentRepo.findByTipaniId(tipaniId);
+        return attachments.stream().map(TipaniAttachmentDTO::new).collect(Collectors.toList());
+    }
 
 
     public void deleteEntity(Long id) {
