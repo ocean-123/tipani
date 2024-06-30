@@ -3,5 +3,9 @@ package com.example.tipani.tipani.repo;
 import com.example.tipani.tipani.entity.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface EmployeeRepo extends JpaRepository<Employee,Long> {
+    Optional<Employee> findByCode(String username);
+
 }
