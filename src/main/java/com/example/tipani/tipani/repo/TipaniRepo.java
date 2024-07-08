@@ -8,4 +8,7 @@ import java.util.List;
 
 public interface TipaniRepo extends JpaRepository<Tipani,Long> {
     List<Tipani> findByStatus(TipaniStatus status);
+
+
+    List<Tipani> findByEmployeeId(Long employeeId);
 }

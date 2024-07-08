@@ -31,9 +31,9 @@ public class Tipani {
    @Enumerated
     private TipaniStatus status;
 
-
-
-    @OneToMany(mappedBy = "tipani")
+   @OneToMany(mappedBy = "tipani")
+   private List<Department> departments= new ArrayList<>();
+    @OneToMany(mappedBy = "tipani" )
     private List<TipaniAttachment> tipaniAttachments = new ArrayList<>();
     @OneToMany(mappedBy = "tipani")
     private List<TipaniRecomendators> tipaniRecomendators = new ArrayList<>() ;

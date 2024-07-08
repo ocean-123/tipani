@@ -1,8 +1,9 @@
 package com.example.tipani.tipani.service;
 
-import com.example.tipani.tipani.entity.Department;
 import com.example.tipani.tipani.entity.Employee;
+import com.example.tipani.tipani.entity.Tipani;
 import com.example.tipani.tipani.entity.dto.EmployeeDTO;
+import com.example.tipani.tipani.entity.dto.TipaniDTO;
 import com.example.tipani.tipani.service.impl.ResourceNotFoundException;
 
 import java.util.List;
@@ -22,4 +23,7 @@ public interface EmployeeService {
 
 
     EmployeeDTO updateEmployee(Long id, EmployeeDTO employeeDTO) throws ResourceNotFoundException;
+
+
+    List<TipaniDTO> getTipaniesByEmployeeId(Long employeeId);
 }

@@ -22,6 +22,9 @@ public class DepartmentDTO {
     private String updateName;
     private Date updateDate;
 
+    private Long tipaniId;
+    private Long employeeId;
+
     public DepartmentDTO(Department department) {
         this.id = department.getId();
         this.title = department.getTitle();
@@ -34,5 +37,8 @@ public class DepartmentDTO {
         this.createdDate = department.getCreatedDate();
         this.updateName = department.getUpdateName();
         this.updateDate = department.getUpdateDate();
+
+        this.tipaniId =(department.getTipani()!=null)? department.getTipani().getId():null;
+        this.employeeId = (department.getEmployee()!=null)? department.getEmployee().getId():null;
     }
 }

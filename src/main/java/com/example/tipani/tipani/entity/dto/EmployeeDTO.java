@@ -1,6 +1,7 @@
 package com.example.tipani.tipani.entity.dto;
 
 import com.example.tipani.tipani.entity.Employee;
+import com.example.tipani.tipani.entity.Roles;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ public class EmployeeDTO {
     private String code;
     private Long designationId;
     private boolean status;
+    private Roles role;
     private String createdName;
     private Date createdDate;
     private String updateName;
@@ -29,6 +31,7 @@ public class EmployeeDTO {
         this.address = employee.getAddress();
         this.tel = employee.getTel();
         this.code = employee.getCode();
+        this.role = employee.getRole();
         this.designationId =  (employee.getDesgination() != null) ? employee.getDesgination().getId() : null;
         this.status = employee.isStatus();
         this.createdName = employee.getCreatedName();

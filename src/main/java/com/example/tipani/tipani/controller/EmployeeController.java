@@ -1,14 +1,15 @@
 package com.example.tipani.tipani.controller;
 
 
-import com.example.tipani.tipani.entity.Department;
 import com.example.tipani.tipani.entity.Employee;
+import com.example.tipani.tipani.entity.Tipani;
 import com.example.tipani.tipani.entity.dto.EmployeeDTO;
-import com.example.tipani.tipani.service.DepartmentService;
+import com.example.tipani.tipani.entity.dto.TipaniDTO;
 import com.example.tipani.tipani.service.EmployeeService;
 import com.example.tipani.tipani.service.impl.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -76,5 +77,12 @@ public class EmployeeController {
     public ResponseEntity<EmployeeDTO> updateEmployee(@PathVariable Long id, @RequestBody EmployeeDTO employeeDTO) throws ResourceNotFoundException {
         EmployeeDTO updatedEmployee = service.updateEmployee(id, employeeDTO);
         return ResponseEntity.ok(updatedEmployee);
+    }
+
+    @GetMapping("/{employeeId}/tipanies")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity getTipaniesByEmployeeId(@PathVariable Long employeeId) {
+        List<TipaniDTO> tipanies = service.getTipaniesByEmployeeId(employeeId);
+        return ResponseEntity.ok(tipanies);
     }
 }

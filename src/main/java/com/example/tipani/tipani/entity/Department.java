@@ -27,6 +27,15 @@ private boolean status;
 
     //emp and tipani
 
+    @ManyToOne
+    @JoinColumn(name = "TIPANI_ID", referencedColumnName = "id")
+    private Tipani tipani;
+
+    @ManyToOne
+    @JoinColumn(name = "EMPLOYEE_ID", referencedColumnName = "id")
+    private Employee employee;
+
+
     @Column(name = "CREATED_NAME", updatable = false)
     private String createdName;
 

@@ -1,6 +1,5 @@
 package com.example.tipani.tipani.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,7 +32,6 @@ public class Employee implements UserDetails {
 
     @ManyToOne
     @JoinColumn(name= "DEGINATION_ID",referencedColumnName = "id")
-//    @JsonBackReference
     private Designation desgination;
 
     @Enumerated
@@ -42,13 +40,16 @@ public class Employee implements UserDetails {
     private String password;
 
     @OneToMany(mappedBy = "employee")
-//    @JsonManagedReference
     private List<Tipani> tipanis =new ArrayList<>();
 
 
     @OneToMany(mappedBy = "employee")
-//    @JsonManagedReference
     private List<TipaniApprover> approvers =new ArrayList<>();
+
+    @OneToMany(mappedBy = "employee")
+    private List<Department> departments = new ArrayList<>() ;
+
+
     private boolean status;
     //active ,inactive
 
